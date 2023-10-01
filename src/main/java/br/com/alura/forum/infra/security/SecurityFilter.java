@@ -4,7 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import br.com.alura.forum.domain.autor.AutorRepository;
+import br.com.alura.forum.domain.usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +18,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     private TokenService tokenService;
     @Autowired
-    private AutorRepository repository;
+    private UsuarioRepository repository;
 
     private String recuperarToken(HttpServletRequest request) {
         String authorizationHeader = request.getHeader("Authorization");
@@ -35,7 +35,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         if(tokenJWT != null) {
             String subject = tokenService.getSubject(tokenJWT);
-            UserDetails usuario = repository.findByLogin(subject);
+            UserDetails usuario = repository.findByUsr_usuario(subject);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }

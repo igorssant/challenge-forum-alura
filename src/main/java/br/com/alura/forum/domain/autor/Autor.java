@@ -5,11 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import java.util.Collection;
-import java.util.List;
+import java.sql.Date;
 
 @Table(name = "tbl_autor")
 @Entity(name = "Autor")
@@ -17,45 +13,31 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "aut_id")
-public class Autor implements UserDetails {
+public class Autor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer aut_id;
-    private String usuario;
-    private String senha;
+    private String nome;
+    private Date dataCadastro;
+    private Boolean ativo;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    public Autor(DadosCadastroAutor autor) {
+        this.ativo = true;
+        this.nome = autor.nome();
+        this.dataCadastro = autor.dataCadastro();
     }
 
-    @Override
-    public String getPassword() {
-        return this.senha;
+    public void atualizar(DadosCadastroAutor autor) {
+        if(autor.nome() != null) {
+            this.nome = autor.nome();
+        }
+
+        if(autor.dataCadastro() != null) {
+            this.dataCadastro = autor.dataCadastro();
+        }
     }
 
-    @Override
-    public String getUsername() {
-        return this.usuario;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
+    public void excluir() {
+        this.ativo = false;
     }
 }

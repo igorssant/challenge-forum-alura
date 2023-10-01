@@ -1,10 +1,16 @@
 BEGIN;
+CREATE TABLE tbl_usuario (
+    usr_id INT NOT NULL AUTO_INCREMENT,
+    usr_usuario VARCHAR(50) NOT NULL,
+    usr_senha VARCHAR(50) NOT NULL,
+    PRIMARY KEY (usr_id)
+);
+
 CREATE TABLE tbl_autor (
 	aut_id INT NOT NULL AUTO_INCREMENT,
 	aut_nome VARCHAR(50) NOT NULL,
-	aut_usuario VARCHAR(100) NOT NULL,
-	aut_senha VARCHAR(64) NOT NULL,
 	aut_data_cadastro DATETIME NOT NULL DEFAULT NOW(),
+	aut_ativo TINYINT,
 	PRIMARY KEY (aut_id)
 );
 
